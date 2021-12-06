@@ -50,6 +50,10 @@ public:
 
 			cout << sh << "sh ";
 		}
+		if (pd==0 && sh==0 && p==0)
+		{
+			cout<<"0p. "
+		}
 		
 	}
 	void SetPd(int);
