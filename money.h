@@ -52,7 +52,7 @@ public:
 		}
 		if (pd==0 && sh==0 && p==0)
 		{
-			cout<<"0p. "
+			cout << "0p. ";
 		}
 		
 	}
