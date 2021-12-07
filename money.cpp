@@ -106,6 +106,11 @@ money operator-(money& first, money& second)
 			money temp(phund, shill, pen1);
 			return temp;
 		}
+		if (phund == 0 && shill == 0 && pen1 == 0)
+		{
+			money temp(phund, shill, pen1);
+			return temp;
+		}
 	}
 	else if (pen1 != pen)
 	{
@@ -132,6 +137,11 @@ money operator-(money& first, money& second)
 		if (phund > 0 && shill > 0 && pen2 > 0)
 		{
 			money temp(phund, shill, pen2);
+			return temp;
+		}
+		if (phund == 0 && shill == 0 && pen1 == 0)
+		{
+			money temp(phund, shill, pen1);
 			return temp;
 		}
 	}
