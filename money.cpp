@@ -1,20 +1,35 @@
 #include "money.h"
 #include<iostream>
-money::money(int pd, int sh, double p)
+money::money(int pd, int sh, double p): pd(pd), sh(sh),p(p)
 {
-	this->pd = pd;
-	this->sh = sh;
-	this->p = p;
+	
+}
+istream& operator>> (istream& in, money& main)
+{
+	in >> main.pd;
+	in >> main.sh;
+	in >> main.p;
+	main.ExceptionHandling(main, std::cout);
+	return in;
 }
 void money::check()
 {
+
 	double p1;
 	int p2;
 	p1 = p * 2;
 	p2 = static_cast<int>(p1);
-	if (p2 != p1 || p > 12|| sh>20)
+	if (p > 12 || p<0 || p1!=p2)
 	{
-		throw std::overflow_error("Errore");
+		throw std::exception("The number of pence does not meet the condition");
+	}
+	if (pd > 10000000000 || pd<0 )
+	{
+		throw std::exception("The number of pounds does not meet the condition");
+	}
+	if (sh>20||sh<0)
+	{
+		throw std::exception("The number of shillings does not meet the condition");
 	}
 }
 void money:: SetSh(int sh)
@@ -29,19 +44,19 @@ void money::SetP(double p)
 {
 	this->p = p;
 }
-int money::GetPd()
+const int money::GetPd()
 {
 	return pd;
 }
-int money::GetSh()
+const int money::GetSh()
 {
 	return sh;
 }
-double money::GetP()
+const double money::GetP()
 {
 	return p;
 }
-money operator+(money& first, money& second)
+money operator+(const money& first,const money& second)
 {
 
 	int phund, shill, pen1;
@@ -71,153 +86,67 @@ money operator+(money& first, money& second)
 	}
 
 }
-money operator-(money& first, money& second)
+money operator-(const money& first, const money& second)
 {
 
-	int phund, shill, pen1;
-	double pen, pen2;
-	phund = first.pd - second.pd;
-	shill = first.sh - second.sh;
-	pen = first.p - second.p;
-	pen1 = static_cast<int>(pen);
-	if (pen1 == pen)
+	int phund=0, shill=0;
+	double pen=0.0;
+	int n=0;
+	if (first >= second)
 	{
-		shill += pen1 / 12;
-		pen1 %= 12;
-		phund += shill / 20;
-		shill %= 20;
-		if (phund < 0 && phund != 0)
+		pen = first.p - second.p;
+		if (first.p<second.p)
 		{
-			money temp(phund, abs(shill), abs(pen1));
-			return temp;
+			n -= 1;
+			pen += 12.0;
 		}
-		if (phund == 0 && shill < 0)
+		shill = first.sh + n- second.sh;
+		if (first.sh+n<second.sh)
 		{
-			money temp(phund, shill, abs(pen1));
-			return temp;
+			phund -= 1;
+			shill += 20;
 		}
-		if (phund == 0 && shill == 0 && pen1 < 0)
-		{
-			money temp(phund, shill, pen1);
-			return temp;
-		}
-		if (phund > 0 && shill > 0 && pen1 > 0)
-		{
-			money temp(phund, shill, pen1);
-			return temp;
-		}
-		if (phund == 0 && shill == 0 && pen1 == 0)
-		{
-			money temp(phund, shill, pen1);
-			return temp;
-		}
+		phund = first.pd - second.pd;
 	}
-	else if (pen1 != pen)
+	else
 	{
-		shill += pen1 / 12;
-		pen1 %= 12;
-		phund += shill / 20;
-		shill %= 20;
-		pen2 = static_cast<double>(pen1) + 0.5;
-		if (phund<0 && phund!=0)
+		pen = second.p - first.p;
+		if (second.p < first.p)
 		{
-			money temp(phund, abs(shill), abs(pen2));
-			return temp;
+			n -= 1;
+			pen += 12.0;
 		}
-		if (phund == 0 && shill<0)
+		shill = second.sh + n - first.sh;
+		if (second.sh + n < first.sh)
 		{
-			money temp(phund, shill, abs(pen2));
-			return temp;
+			phund -= 1;
+			shill += 20;
 		}
-		if (phund==0 && shill==0 && pen2<0)
-		{
-			money temp(phund, shill, pen2);
-			return temp;
-		}
-		if (phund > 0 && shill > 0 && pen2 > 0)
-		{
-			money temp(phund, shill, pen2);
-			return temp;
-		}
-		if (phund == 0 && shill == 0 && pen1 == 0)
-		{
-			money temp(phund, shill, pen1);
-			return temp;
-		}
+		phund = second.pd - first.pd;
+		pen * -1; shill * -1; phund * -1;
 	}
+	return money(phund, shill, pen);
 
 }
-money& money::operator+=( money& second)
+money operator+= (money& first, const money& second)
 {
-	int phund, shill, pen1;
-	double pen, pen2;
-	phund = this->pd + second.pd;
-	shill = this->sh + second.sh;
-	pen = this->p + second.p;
-	pen1 = static_cast<int>(pen);
-	if (pen1 == pen)
-	{
-		shill += pen1 / 12;
-		pen1 %= 12;
-		phund += shill / 20;
-		shill %= 20;
-		this->pd=phund;
-		this->sh=shill;
-		this->p=pen1;
-		return *this;
-	}
-	else if (pen1 != pen)
-	{
-		shill += pen1 / 12;
-		pen1 %= 12;
-		phund += shill / 20;
-		shill %= 20;
-		pen2 = static_cast<double>(pen1) + 0.5;
-		this->pd = phund;
-		this->sh = shill;
-		this->p = pen2;
-		return *this;
-	}
+	first = (first + second);
+	return first;
+
 }
-money& money::operator-=(money& second)
+money operator-= (money& first, const money& second)
 {
-	int phund, shill, pen1;
-	double pen, pen2;
-	phund = this->pd - second.pd;
-	shill = this->sh - second.sh;
-	pen = this->p - second.p;
-	pen1 = static_cast<int>(pen);
-	if (pen1 == pen)
-	{
-		shill += pen1 / 12;
-		pen1 %= 12;
-		phund += shill / 20;
-		shill %= 20;
-		this->pd = phund;
-		this->sh = shill;
-		this->p = pen1;
-		return *this;
-	}
-	else if (pen1 != pen)
-	{
-		shill += pen1 / 12;
-		pen1 %= 12;
-		phund += shill / 20;
-		shill %= 20;
-		pen2 = static_cast<double>(pen1) + 0.5;
-		this->pd = phund;
-		this->sh = shill;
-		this->p = pen2;
-		return *this;
-	}
+	first = (first - second);
+	return first;
+
 }
 money money::operator-()
 {
 	return money(-pd, sh, p);
 }
-bool operator==(money& first, money& second)
+bool operator==(const money& first, const money& second)
 {
-	if (first.pd == second.pd && first.sh == second.sh && first.p == second.p)
+	if (first.pd==second.pd && first.sh==second.sh && first.p==second.p)
 	{
 		return true;
 	}
@@ -226,69 +155,75 @@ bool operator==(money& first, money& second)
 		return false;
 	}
 }
-bool operator!=(money& first, money& second)
+bool operator!=(const money& first,const money& second)
 {
-	if (first.pd != second.pd || first.sh != second.sh || first.p != second.p)
-	{
-		return true;
-	}
-	else
+	if (first==second)
 	{
 		return false;
 	}
-}
-bool operator>(money& first, money& second)
-{
-	double sum1 = first.pd * 240 + first.sh * 20 + first.p;
-	double sum2 = second.pd * 240 + second.sh * 20 + second.p;
-	if (sum1>sum2)
+	else
 	{
 		return true;
 	}
-	else
+}
+bool operator>(const money& first,const money& second)
+{
+	if (first.pd >= second.pd)
 	{
-		return false;
+		if (first.pd > second.pd)
+		{
+			return true;
+		}
+		else if (first.sh >= second.sh)
+		{
+			if (first.sh > second.sh)
+			{
+				return true;
+			}
+			else if (first.p > second.p)
+			{
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+bool operator>=(const money& first, const money& second)
+{
+	if (first==second || first>second)
+	{
+		return true;
 	}
 }
-bool operator>=(money& first, money& second)
+bool operator<(const money& first,const  money& second)
+{
+	if (first.pd <= second.pd)
+	{
+		if (first.pd < second.pd)
+		{
+			return true;
+		}
+		else if (first.sh <= second.sh)
+		{
+			if (first.sh < second.sh)
+			{
+				return true;
+			}
+			else if (first.p < second.p)
+			{
+				return true;
+			}
+		}
+	}
+		return false;
+	
+}
+bool operator<=(const money& first, const money& second)
 {
 
-	double sum1 = first.pd * 240 + first.sh * 20 + first.p;
-	double sum2 = second.pd * 240 + second.sh * 20 + second.p;
-	if (sum1>=sum2)
+	if (first == second|| first < second)
 	{
 		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
-bool operator<(money& first, money& second)
-{
-
-	double sum1 = first.pd * 240 + first.sh * 20 + first.p;
-	double sum2 = second.pd * 240 + second.sh * 20 + second.p;
-	if (sum1<sum2)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
-bool operator<=(money& first, money& second)
-{
-
-	double sum1 = first.pd * 240 + first.sh * 20 + first.p;
-	double sum2 = second.pd * 240 + second.sh * 20 + second.p;
-	if (sum1 <= sum2)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
 	}
 }

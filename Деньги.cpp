@@ -6,118 +6,50 @@ using namespace std;
 int main()
 {
 	setlocale(LC_ALL, "ru");
-	int shillings, pounds,shillings1,pounds1;
-	double pennies, pennies1;
+	money first, second;
 	cout << "Введите первую сумму : ";
-	cin >> pounds;
-	cin >> shillings;
-	cin >> pennies;
-	money a(pounds, shillings, pennies);
-	try
-	{
-		a.check();
-	}
-	catch (...)
-	{
-		cout << "Error" << endl;
-		return 1;
-	}
-
-	a.Print();
+	cin >> first;
+	first.Print(cout);
 	cout << endl;
 	cout << "Введите вторую сумму : ";
-	cin >> pounds1;
-	cin >> shillings1;
-	cin >> pennies1;
-	money b(pounds1, shillings1, pennies1);
-	try
-	{
-		b.check();
-	}
-	catch (...)
-	{
-		cout << "Error" << endl;
-		return 1;
-	}
-	b.Print();
+	cin >> second;
+	second.Print(cout);
 	cout << endl;
 	cout << "Сумма : ";
-	money result = a + b;
-	result.Print();
+	money result = first + second;
+	result.Print(cout);
 	cout << endl;
 	cout << "Разность : ";
-	money result1 = a - b;
-	result1.Print();
+	money result1 = first - second;
+	result1.Print(cout);
 	cout << endl;
-	cout << "Орерация а+= :";
-	a += b;
-	a.Print();
+	cout << "Орерация first += second :";
+	first += second;
+	first.Print(cout);
 	cout << endl;
-	cout << "Орерация а-= :";
-	a -= b;
-	a.Print();
+	cout << "Орерация first -= second :";
+	first -= second;
+	first.Print(cout);
 	cout << endl;
-	cout << "Унарный - а : ";
-	a = -a;
-	a.Print();
+	cout << "Унарный - first  : ";
+	first = -first;
+	first.Print(cout);
 	cout << endl;
-	cout << "a==b :";
-	if (a == b)
-	{
-		cout << "true" << endl;
-	}
-	else
-	{
-		cout << "false" << endl;
-	}
+	cout << "first == second :";
+	cout << "it is " << (first == second);
 	cout << endl;
-	cout << "a!=b :";
-	if (a != b)
-	{
-		cout << "true" << endl;
-	}
-	else
-	{
-		cout << "false" << endl;
-	}
+	cout << "first != second :";
+	cout << "it is " << (first != second);
 	cout << endl;
-	cout << "a>b :";
-	if (a > b)
-	{
-		cout << "true" << endl;
-	}
-	else
-	{
-		cout << "false" << endl;
-	}
+	cout << "first > second :";
+	cout << "it is " << (first > second);
 	cout << endl;
-	cout << "a>=b :";
-	if (a >= b)
-	{
-		cout << "true" << endl;
-	}
-	else
-	{
-		cout << "false" << endl;
-	}
+	cout << "first >= second :";
+	cout << "it is " << (first >= second);
 	cout << endl;
-	cout << "a<b :";
-	if (a < b)
-	{
-		cout << "true" << endl;
-	}
-	else
-	{
-		cout << "false" << endl;
-	}
+	cout << "first < second :";
+	cout << "it is " << (first < second);
 	cout << endl;
-	cout << "a<=b :";
-	if (a <= b)
-	{
-		cout << "true" << endl;
-	}
-	else
-	{
-		cout << "false" << endl;
-	}
+	cout << "first <= second :";
+	cout << "it is " << (first <= second);
 }

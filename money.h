@@ -16,63 +16,76 @@ public:
 		sh = 0;
 		p = 0;
 	}
-	void Print()
+	void Print(ostream& os)
 	{
 		if (pd != 0 && sh != 0 && p != 0)
 		{
-			cout << pd << "pd " << sh << "sh " << p << "p ";
+			os << pd << "pd " << sh << "sh " << p << "p ";
 		}
 		if (pd==0 && sh!=0 && p!=0)
 		{
-			cout << sh << "sh " << p << "p ";
+			os << sh << "sh " << p << "p ";
 		}
 		if(pd!=0 && sh==0 && p!=0)
 		{
-			cout << pd << "pd "<< p << "p ";
+			os << pd << "pd "<< p << "p ";
 		}
 		if (pd!=0 && sh!=0 && p==0)
 		{
-			cout << pd << "pd " << sh << "sh ";
+			os << pd << "pd " << sh << "sh ";
 
 		}
 	    if (pd == 0 && sh == 0 && p != 0)
 		{
-			cout << p << "p ";
+			os << p << "p ";
 
 		}
 	    if (pd != 0 && sh == 0 && p == 0)
 		{
-			cout << pd << "pd ";
+			os << pd << "pd ";
 
 		}
 	    if (pd == 0 && sh != 0 && p == 0)
 		{
 
-			cout << sh << "sh ";
+			os << sh << "sh ";
 		}
-		if (pd==0 && sh==0 && p==0)
+		if (pd == 0 && sh == 0 && p == 0)
 		{
-			cout << "0p. ";
+			os << "0p. ";
 		}
 		
 	}
 	void SetPd(int);
-	int GetSh();
+	const int GetSh();
 	void SetSh(int);
-	int GetPd();
+	const int GetPd();
 	void SetP(double);
-	double GetP();
+	const double GetP();
 	void check();
-	friend money operator+( money& first, money& second);
-	friend money operator-( money& first, money& second);
+	const void ExceptionHandling(money a , ostream& oc)
+	{
+		try
+		{
+			a.check();
+		}
+		catch (const exception& exp)
+		{
+			oc << exp.what() << endl;
+			exit(0);
+		}
+	}
     money operator-();
-    money& operator+=(money&);
-    money& operator-=(money&);
-	friend bool operator==(money& first, money& second);
-	friend bool operator!=(money& first, money& second);
-	friend bool operator>(money& first, money& second);
-	friend bool operator>=(money& first, money& second);
-	friend bool operator<(money& first, money& second);
-	friend bool operator<=(money& first, money& second);
+	friend istream& operator>> (istream& in, money& main);
+	friend money operator+(const money& first,const money& second);
+	friend money operator-(const money& first, const money& second);
+    friend money operator+=(money& first, const money& second);
+	friend money operator-= (money& first, const money& second);
+	friend bool operator==(const money& first,const money& second);
+	friend bool operator!=(const money& first,const  money& second);
+	friend bool operator>(const money& first,const money& second);
+	friend bool operator>=(const money& first,const money& second);
+	friend bool operator<(const money& first,const money& second);
+	friend bool operator<=(const money& first,const money& second);
 };
 
