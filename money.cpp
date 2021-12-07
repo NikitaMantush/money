@@ -123,7 +123,7 @@ money operator-(const money& first, const money& second)
 			shill += 20;
 		}
 		phund = second.pd - first.pd;
-		pen * -1; shill * -1; phund * -1;
+		pen *= -1; shill *= -1; phund *= -1;
 	}
 	return money(phund, shill, pen);
 
