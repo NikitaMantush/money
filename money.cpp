@@ -142,7 +142,7 @@ money operator-= (money& first, const money& second)
 }
 money money::operator-()
 {
-	return money(-pd, sh, p);
+	return money(-pd, -sh, -p);
 }
 bool operator==(const money& first, const money& second)
 {
